@@ -49,6 +49,15 @@ class BaseImagePageTemplateState<T extends BaseImagePageTemplate> extends BasePa
   AppBar getPageHeaderWidget(BuildContext context) => AppBar(
     backgroundColor: Colors.white.withOpacity(.1),
     elevation: 0,
+    leading: Builder(
+      builder: (BuildContext context) {
+        return IconButton(
+          icon: const Icon(Icons.menu, size: 40), // Increased hamburger icon size
+          onPressed: () => Scaffold.of(context).openDrawer(),
+          tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+        );
+      },
+    ),
     title: const Text(
       "Peter Swanson's Portfolio",
       style: TextStyle(
