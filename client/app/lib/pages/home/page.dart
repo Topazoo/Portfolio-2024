@@ -1,26 +1,36 @@
-
-import 'package:flongo_client/pages/base_page.dart';
-import 'package:flongo_client/utilities/http_client.dart';
-import 'package:flongo_client/widgets/navbar/app_navbar.dart';
+import 'package:app/pages/_templates/base_image_page.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flongo_client/widgets/widgets.dart';
 import '../../navbar.dart';
 
-class HomePage extends BasePage {
-  @override
-  final bool authenticationRequired = true;
-  @override
-  final AppNavBar navbar = NavBar();
-
+class HomePage extends BaseImagePageTemplate {
   HomePage({super.key});
 
   @override
-  HomePageState createState() => HomePageState();
+  final AppNavBar navbar = NavBar();
+  // TODO - Replace base image
+  final ImageProvider background = const NetworkImage('https://images.pexels.com/photos/956981/milky-way-starry-sky-night-sky-star-956981.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+
+  @override
+  _HomePageState createState() => _HomePageState();
 }
 
-class HomePageState extends BasePageState {
+class _HomePageState extends BaseImagePageTemplateState<HomePage> {
+
   @override
-  Widget getPageWidget(BuildContext context) {
-    return Center(child: Text('Welcome Home: ${HTTPClient.getUsername()}'));
+  Widget getHeroWidget(BuildContext context) {
+    return const Center(
+      child: Text(
+        "Home Page",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.white70,
+          fontSize: 36,
+          fontWeight: FontWeight.w900,
+          letterSpacing: 1.5,
+          height: 1.5,
+        ),
+      ),
+    );
   }
 }
