@@ -13,6 +13,9 @@ class BaseImagePageTemplate extends BasePage {
   // TODO - Replace base image
   final ImageProvider background = const NetworkImage('https://images.pexels.com/photos/956981/milky-way-starry-sky-night-sky-star-956981.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
 
+  final GlobalKey footerKey = GlobalKey();
+  final GlobalKey headerKey = GlobalKey();
+
   @override
   BaseImagePageTemplateState createState() => BaseImagePageTemplateState();
 }
@@ -47,6 +50,7 @@ class BaseImagePageTemplateState<T extends BaseImagePageTemplate> extends BasePa
 
   @override
   AppBar getPageHeaderWidget(BuildContext context) => AppBar(
+    key: widget.headerKey,
     backgroundColor: Colors.white.withOpacity(.1),
     elevation: 0,
     leading: Builder(
@@ -75,6 +79,7 @@ class BaseImagePageTemplateState<T extends BaseImagePageTemplate> extends BasePa
     bool isSmallScreen = MediaQuery.of(context).size.width < 600;
 
     return Container(
+      key: widget.footerKey,
       padding: isSmallScreen ? const EdgeInsets.all(10) : const EdgeInsets.all(20),
       color: AppTheme.accentTextColor.withOpacity(.3),
       child: Wrap(
