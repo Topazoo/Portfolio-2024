@@ -8,7 +8,7 @@ class NavBar extends AppNavBar {
     NavBarItem(
       icon: Icons.home,
       title: 'Home',
-      routeName: '/home',
+      routeName: '/',
       routeArguments: {"_animation": FadeToBlackTransition.transitionsBuilder, "_animation_duration": 400},
       inaccessibleRoutes: ['/']
     ),
@@ -17,6 +17,27 @@ class NavBar extends AppNavBar {
       icon: Icons.person,
       title: 'About Me',
       routeName: '/about_me',
+      routeArguments: {"_animation": FadeToBlackTransition.transitionsBuilder, "_animation_duration": 400},
+    ),
+
+    NavBarItem(
+      icon: Icons.playlist_add_check_circle,
+      title: 'Projects',
+      routeName: '/projects',
+      routeArguments: {"_animation": FadeToBlackTransition.transitionsBuilder, "_animation_duration": 400},
+    ),
+
+    NavBarItem(
+      icon: Icons.token,
+      title: 'Packages',
+      routeName: '/packages',
+      routeArguments: {"_animation": FadeToBlackTransition.transitionsBuilder, "_animation_duration": 400},
+    ),
+
+    NavBarItem(
+      icon: Icons.contact_emergency,
+      title: 'Contact',
+      routeName: '/contact',
       routeArguments: {"_animation": FadeToBlackTransition.transitionsBuilder, "_animation_duration": 400},
     ),
   ];
