@@ -34,33 +34,32 @@ class _HomePageState extends BaseImagePageTemplateState<HomePage> with TickerPro
     )..forward();
     // Generate positions after build
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _measureAppBar();
       _measureFooter();
       _generateStarPositions();
     });
   }
 
-  void _measureAppBar() {
-    final RenderBox appBarBox = widget.headerKey.currentContext?.findRenderObject() as RenderBox;
-    _appBarHeight = appBarBox.size.height;
-  }
-
   void _measureFooter() {
-    final RenderBox footerBox = widget.footerKey.currentContext?.findRenderObject() as RenderBox;
-    _footerHeight = footerBox.size.height;
+    final RenderBox? footerBox = widget.footerKey.currentContext?.findRenderObject() as RenderBox?;
+    if (footerBox != null) {
+      _footerHeight = footerBox.size.height;
+    } else {
+      // Fallback or default value in case the footerBox is not available
+      _footerHeight = 60.0; // Consider using a default height or another handling mechanism
+    }
   }
 
   void _generateStarPositions() {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    const edgeMargin = 100.0; // Margin from the edge of the screen
-    final safeTop = _appBarHeight ?? AppBar().preferredSize.height + edgeMargin;
-    final safeBottom = screenHeight - ((_footerHeight ?? 60.0 + edgeMargin) + 200);
-    const safeLeft = edgeMargin;
+    const edgeMargin = 150.0; // Margin from the edge of the screen
+    final safeTop = AppBar().preferredSize.height;
+    final safeBottom = screenHeight - ((_footerHeight ?? 60.0 + edgeMargin) + 250);
+    const safeLeft = 10;
     final safeRight = screenWidth - edgeMargin;
 
     // Define a minimum distance between stars to prevent overlap
-    const minStarDistance = 100.0;
+    const minStarDistance = 180.0;
 
     // Generate star positions with constraints
     List<Offset> positions = [];
@@ -100,7 +99,7 @@ class _HomePageState extends BaseImagePageTemplateState<HomePage> with TickerPro
   }
 
   List<Widget> _buildStarNavItems(BuildContext context) {
-    final navItems = widget.navbar.getNavbarItems()..removeWhere((element) => element.routeName == '/home');
+    final navItems = widget.navbar.getNavbarItems()..removeWhere((element) => element.routeName == '/');
 
     return List.generate(navItems.length, (index) {
       final navItem = navItems[index];
@@ -121,17 +120,17 @@ class _HomePageState extends BaseImagePageTemplateState<HomePage> with TickerPro
               children: <Widget>[
                 Lottie.asset(
                   'assets/animations/white_star_fast.json',
-                  width: 130,
-                  height: 130,
+                  width: 200,
+                  height: 200,
                   repeat: false,
                 ),
                 Positioned(
-                  bottom: 0, // Adjust as necessary to move text closer to the star
+                  bottom: 20, // Adjust as necessary to move text closer to the star
                   child: FadeTransition(
                     opacity: _animationController,
                     child: Text(
                       navItem.title,
-                      style: const TextStyle(color: Colors.white, fontSize: 18),
+                      style: const TextStyle(color: Colors.white, fontSize: 24),
                       textAlign: TextAlign.center,
                     ),
                   ),
