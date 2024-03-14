@@ -1,10 +1,10 @@
 import 'package:app/pages/_templates/base_image_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flongo_client/widgets/widgets.dart';
-import 'package:lottie/lottie.dart';
 import 'dart:math';
 
 import '../../navbar.dart';
+import 'animations/config.dart';
 
 class HomePage extends BaseImagePageTemplate {
   HomePage({super.key});
@@ -22,7 +22,6 @@ class _HomePageState extends BaseImagePageTemplateState<HomePage> with TickerPro
   final Random _random = Random();
   List<Offset> _starPositions = [];
   late final AnimationController _animationController;
-  double? _appBarHeight;
   double? _footerHeight;
 
   @override
@@ -52,9 +51,9 @@ class _HomePageState extends BaseImagePageTemplateState<HomePage> with TickerPro
   void _generateStarPositions() {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    const edgeMargin = 150.0; // Margin from the edge of the screen
+    const edgeMargin = 170.0; // Margin from the edge of the screen
     final safeTop = AppBar().preferredSize.height;
-    final safeBottom = screenHeight - ((_footerHeight ?? 60.0 + edgeMargin) + 250);
+    final safeBottom = screenHeight - ((_footerHeight ?? 60.0 + edgeMargin) + 200);
     const safeLeft = 10;
     final safeRight = screenWidth - edgeMargin;
 
@@ -66,6 +65,7 @@ class _HomePageState extends BaseImagePageTemplateState<HomePage> with TickerPro
     for (int i = 0; i < widget.navbar.getNavbarItems().length; i++) {
       Offset newPos;
       bool tooClose;
+      int placeCount = 0;
       do {
         tooClose = false;
         newPos = Offset(
@@ -79,7 +79,8 @@ class _HomePageState extends BaseImagePageTemplateState<HomePage> with TickerPro
             break;
           }
         }
-      } while (tooClose);
+        placeCount++;
+      } while (tooClose && placeCount < 40);
 
       positions.add(newPos);
     }
@@ -100,11 +101,14 @@ class _HomePageState extends BaseImagePageTemplateState<HomePage> with TickerPro
 
   List<Widget> _buildStarNavItems(BuildContext context) {
     final navItems = widget.navbar.getNavbarItems()..removeWhere((element) => element.routeName == '/');
+    final possibleAnimations = List.from(ANIMATION_CONFIG);
 
     return List.generate(navItems.length, (index) {
       final navItem = navItems[index];
       final position = _starPositions[index];
+      final animation = possibleAnimations.removeAt(_random.nextInt(possibleAnimations.length));
 
+      // Wrap only the contents inside the Positioned widget with FadeTransition
       return Positioned(
         left: position.dx,
         top: position.dy,
@@ -114,28 +118,9 @@ class _HomePageState extends BaseImagePageTemplateState<HomePage> with TickerPro
           },
           child: MouseRegion(
             cursor: SystemMouseCursors.click,
-            child: Stack(
-              alignment: Alignment.topCenter,
-              clipBehavior: Clip.none, // Allows the text to be positioned outside the stack
-              children: <Widget>[
-                Lottie.asset(
-                  'assets/animations/white_star_fast.json',
-                  width: 200,
-                  height: 200,
-                  repeat: false,
-                ),
-                Positioned(
-                  bottom: 20, // Adjust as necessary to move text closer to the star
-                  child: FadeTransition(
-                    opacity: _animationController,
-                    child: Text(
-                      navItem.title,
-                      style: const TextStyle(color: Colors.white, fontSize: 24),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-              ],
+            child: FadeTransition(
+              opacity: _animationController,
+              child: animation.toWidget(navItem.title)
             ),
           ),
         ),
