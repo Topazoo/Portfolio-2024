@@ -24,7 +24,6 @@ class BaseImagePageTemplateState<T extends BaseImagePageTemplate> extends BasePa
     return Stack(
       children: <Widget>[
         _buildHeroSection(context),
-        getBottomWidget(context),
       ],
     );
   }
@@ -41,29 +40,6 @@ class BaseImagePageTemplateState<T extends BaseImagePageTemplate> extends BasePa
           fontWeight: FontWeight.w900,
           letterSpacing: 1.5,
           height: 1.5,
-        ),
-      ),
-    );
-  }
-
-  Widget getBottomWidget(BuildContext context) {
-    const double footerHeight = 60;
-    const double paddingAboveFooter = 30; // Space between the text and the footer.
-
-    return Positioned(
-      left: 0,
-      right: 0,
-      bottom: footerHeight + paddingAboveFooter,
-      child: Container(
-        alignment: Alignment.center,
-        child: const Text(
-          'SOFTWARE ENGINEER - FULL STACK, BACKEND FOCUSED',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.white, // Slightly opaque white
-            fontSize: 20, // Adjust the size to your preference
-            fontWeight: FontWeight.w500,
-          ),
         ),
       ),
     );
