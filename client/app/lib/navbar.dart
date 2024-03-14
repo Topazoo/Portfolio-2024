@@ -14,13 +14,6 @@ class NavBar extends AppNavBar {
     ),
 
     NavBarItem(
-      icon: Icons.person,
-      title: 'About Me',
-      routeName: '/about_me',
-      routeArguments: {"_animation": FadeToBlackTransition.transitionsBuilder, "_animation_duration": 400},
-    ),
-
-    NavBarItem(
       icon: Icons.playlist_add_check_circle,
       title: 'Projects',
       routeName: '/projects',
@@ -31,6 +24,20 @@ class NavBar extends AppNavBar {
       icon: Icons.token,
       title: 'Packages',
       routeName: '/packages',
+      routeArguments: {"_animation": FadeToBlackTransition.transitionsBuilder, "_animation_duration": 400},
+    ),
+
+    NavBarItem(
+      icon: Icons.person,
+      title: 'About Me',
+      routeName: '/about_me',
+      routeArguments: {"_animation": FadeToBlackTransition.transitionsBuilder, "_animation_duration": 400},
+    ),
+
+    NavBarItem(
+      icon: Icons.webhook,
+      title: 'About This App',
+      routeName: '/about_this_app',
       routeArguments: {"_animation": FadeToBlackTransition.transitionsBuilder, "_animation_duration": 400},
     ),
 
