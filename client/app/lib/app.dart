@@ -1,4 +1,5 @@
 import 'package:app/pages/home/page.dart';
+import 'package:app/pages/projects/page.dart';
 import 'package:app/pages/splash/page.dart';
 import 'package:app/theme.dart';
 
@@ -11,6 +12,7 @@ final FlongoApp flongoApp = FlongoApp(
   router: AppRouter(
     routeBuilders: {
       '/': (context, args) => HomePage(),
+      '/projects': (context, args) => ProjectsPage(),
       '/_splash': (context, args) => const SplashScreen(),
     },
   ),
