@@ -1,4 +1,5 @@
 import 'package:app/pages/_templates/base_image_page.dart';
+import 'package:flongo_client/utilities/transitions/fade_to_black_transition.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
@@ -110,7 +111,10 @@ class _HomePageState extends BaseImagePageTemplateState<HomePage> with TickerPro
         top: position.dy,
         child: GestureDetector(
           onTap: () {
-            Navigator.of(context).pushNamed(navItem.routeName);
+            Navigator.of(context).pushNamed(
+              navItem.routeName, 
+              arguments: {"_animation": FadeToBlackTransition.transitionsBuilder, "_animation_duration": 1000}
+            );
           },
           child: MouseRegion(
             cursor: SystemMouseCursors.click,
