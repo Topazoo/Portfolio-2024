@@ -82,6 +82,7 @@ void initState() {
     }).toList();
   }
 
+  // TODO - Fix on Mobile 
   Widget buildFilterChip(String label, int count, String selectedFilter, ValueChanged<String> onSelected) {
     bool isSelected = selectedFilter == label;
     return ChoiceChip(
@@ -95,25 +96,97 @@ void initState() {
   }
 
   Widget buildCategoryFilterList() {
-    return Wrap(
-      spacing: 8.0,
-      children: categories.map((category) {
-        return buildFilterChip(category, categoryCount[category] ?? 0, selectedCategory, applyCategoryFilter);
-      }).toList(),
+    return Padding(
+      child: Wrap(
+        spacing: 8.0,
+        children: categories.map((category) {
+          return buildFilterChip(category, categoryCount[category] ?? 0, selectedCategory, applyCategoryFilter);
+        }).toList(),
+      ),
+      padding: EdgeInsets.only(left: 10),
     );
   }
 
   Widget buildLanguageFilterList() {
-    return Wrap(
-      spacing: 8.0,
-      children: availableLanguages.map((language) {
-        return buildFilterChip(language, languageCount[language] ?? 0, selectedLanguage, applyLanguageFilter);
-      }).toList(),
+    return Padding(
+      child: Wrap(
+        spacing: 8.0,
+        runSpacing: 8.0,
+        children: availableLanguages.map((language) {
+          return buildFilterChip(language, languageCount[language] ?? 0, selectedLanguage, applyLanguageFilter);
+        }).toList(),
+      ),
+      padding: EdgeInsets.only(left: 10),
     );
   }
 
+  Widget buildCategoryDropdown(BuildContext context) {
+    return PopupMenuButton<String>(
+      onSelected: applyCategoryFilter,
+      itemBuilder: (BuildContext context) {
+        return categories.map((String category) {
+          return PopupMenuItem<String>(
+            value: category,
+            child: Text('$category (${categoryCount[category]})'),
+          );
+        }).toList();
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Categories',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+          Icon(Icons.arrow_drop_down, color: Colors.white),
+        ],
+      ),
+    );
+  }
+
+  Widget buildLanguageDropdown(BuildContext context) {
+    return PopupMenuButton<String>(
+      onSelected: applyLanguageFilter,
+      itemBuilder: (BuildContext context) {
+        return availableLanguages.map((String language) {
+          return PopupMenuItem<String>(
+            value: language,
+            child: Text('$language (${languageCount[language]})'),
+          );
+        }).toList();
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Languages',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+          Icon(Icons.arrow_drop_down, color: Colors.white),
+        ],
+      ),
+    );
+  }
+
+
   @override
   Widget getHeroWidget(BuildContext context) {
+    // Get the width of the screen
+    var screenWidth = MediaQuery.of(context).size.width;
+    bool isMobile = screenWidth < 600;
+
+    // Determine the cross axis count based on screen width
+    int crossAxisCount = 4;
+    if (screenWidth < 600) {
+      crossAxisCount = 2;
+    } else if (screenWidth < 1000) {
+      crossAxisCount = 3;
+    }
+
+    // Adjust spacing for the filter chips if the screen is narrow
+    double chipSpacing = screenWidth < 350 ? 4.0 : 8.0;
+    double mainAxisChipSpacing = screenWidth < 350 ? 8.0 : 16.0;
+
     return Container(
       padding: EdgeInsets.only(
         top: kToolbarHeight + MediaQuery.of(context).padding.top,
@@ -126,31 +199,25 @@ void initState() {
           // Title "Projects"
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                "Projects",
-                style: TextStyle(fontSize: 34, fontWeight: FontWeight.bold, color: Colors.white),
-              ),
+            child: Align(alignment: Alignment.center, child: Text(
+              "Projects",
+              style: TextStyle(fontSize: 34, fontWeight: FontWeight.bold, color: Colors.white),
             ),
-          ),
-          // Category filter chips
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: buildCategoryFilterList(),
-          ),
-          const SizedBox(height: 10.0),
-          // Language filter chips
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: buildLanguageFilterList(),
-          ),
+          )),
+          if (isMobile) ...[
+            buildCategoryDropdown(context),
+            buildLanguageDropdown(context),
+          ] else ...[
+            buildCategoryFilterList(),
+            const SizedBox(height: 8.0),
+            buildLanguageFilterList(),
+          ],
           const SizedBox(height: 8.0),
           Expanded(
             child: GridView.builder(
               padding: const EdgeInsets.all(16.0),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount, // Adjusted based on screen width
                 crossAxisSpacing: 16.0,
                 mainAxisSpacing: 24.0,
               ),
@@ -164,6 +231,7 @@ void initState() {
       ),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {

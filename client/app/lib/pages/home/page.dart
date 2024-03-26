@@ -36,13 +36,7 @@ class _HomePageState extends BaseImagePageTemplateState<HomePage> with TickerPro
   }
 
   void _measureFooter() {
-    final RenderBox? footerBox = widget.footerKey.currentContext?.findRenderObject() as RenderBox?;
-    if (footerBox != null) {
-      _footerHeight = footerBox.size.height;
-    } else {
-      // Fallback or default value in case the footerBox is not available
       _footerHeight = 60.0; // Consider using a default height or another handling mechanism
-    }
   }
 
   void _generateStarPositions() {
